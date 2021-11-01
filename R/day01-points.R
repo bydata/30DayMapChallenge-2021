@@ -8,13 +8,6 @@ coords_cgn <- getbb("Cologne, Germany", format_out = "sf_polygon")
 coords_cgn
 coords_cathedral <- getbb("Kölner Dom, Cologne, Germany",
                           featuretype = "church")
-# coords_rhine <- opq(bbox = 'Cologne, Germany') %>%
-#   add_osm_feature(key = 'name:de', value = 'Rhein', value_exact = TRUE) %>%
-#   osmdata_sf()
-# coords_rhine_cgn <- sf::st_intersection(coords_cgn, coords_rhine$osm_lines)
-
-ggplot(coords_cgn) +
-  geom_sf()
 
 
 ## GET DATA =================================
@@ -59,11 +52,6 @@ ggplot(coords_cgn) +
                       aes(x, y),
                       image = cathedral_filepath,
                       alpha = 0.3, size = 0.5, col = "#854e99") +
-  # # plot Rhine
-  # geom_sf(data = coords_rhine_cgn,
-  #         aes(geometry = geometry),
-  #         size = 2, col = "#854e99") +
-  # Locations of day nurseries
   geom_sf(data = kitas_sf,
              aes(geometry = geometry,
                  fill = type),
