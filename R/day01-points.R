@@ -33,7 +33,7 @@ kitas_sf <- bind_rows(kitas_private_sf, kitas_public_sf, .id = "type") %>%
 
 ## PLOT ========================================================================
 
-# https://toppng.com/show_download/154246/kolner-dom/large (creator: John3)
+# Download from https://toppng.com/show_download/154246/kolner-dom/large (creator: John3)
 cathedral_filepath <- here("toppng.com-kölner-dom-2000x3401.png")
 cathedral_img <- png::readPNG(cathedral_filepath)
 
