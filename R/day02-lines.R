@@ -11,11 +11,7 @@ if (!file.exists(dir_raster)) {
                    destdir = dir_raster, load = FALSE)
 }
 
-# relief <- raster::raster(here(dir_raster, "SR_LR.tif"))
-# relief_spdf <- as(relief, "SpatialPixelsDataFrame")
-# relief2 <- as.data.frame(relief_spdf) %>%
-#   rename(value = SR_LR)
-
+# Read raster data for relief
 relief <- raster::raster(here(dir_raster, "SR_LR.tif")) %>%
   as("SpatialPixelsDataFrame") %>%
   as.data.frame() %>%
@@ -43,7 +39,7 @@ ggplot() +
               show.legend = FALSE) +
   # The Rhine river course
   geom_sf(data = coords_rhine$osm_lines,
-          col = "#1d7cdb", size = 1) +
+          col = "#1d7cdb", size = 1.1) +
   # Marker and label for Cologne
   geom_point(aes(coords_cathedral["x", "min"],
                  coords_cathedral["y", "min"]),
