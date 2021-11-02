@@ -37,14 +37,25 @@ coords_cathedral <- getbb("Kölner Dom, Cologne, Germany",
                           featuretype = "church")
 
 ggplot() +
+  # Relief
   geom_raster(data = relief_filtered,
               aes(x, y, alpha = value), fill = "white",
               show.legend = FALSE) +
+  # The Rhine river course
   geom_sf(data = coords_rhine$osm_lines,
-          col = "darkblue", size = 1.1) +
+          col = "#1d7cdb", size = 1) +
+  # Marker and label for Cologne
   geom_point(aes(coords_cathedral["x", "min"],
                  coords_cathedral["y", "min"]),
              shape = 25, fill = "grey8", col = "white", size = 7) +
+  annotate("label", label = "Cologne",
+           x = coords_cathedral["x", "min"] + 0.2,
+           y = coords_cathedral["y", "min"],
+           size = 4, label.size = 0, label.r = unit(0.05, "lines"),
+           fill = "grey12", col = "white", alpha = 0.6,
+           hjust = 0,
+           family = "Roboto", fontface = "bold") +
+  # TITLE + key facts
   annotate("richtext",
            label = "The Rhine",
            x = 4.1, y = 49.5,
@@ -63,13 +74,6 @@ ggplot() +
            label.color = NA, fill = NA,
            hjust = 0, vjust = 1, lineheight = 1.3
   ) +
-  annotate("label", label = "Cologne",
-           x = coords_cathedral["x", "min"] + 0.2,
-           y = coords_cathedral["y", "min"],
-           size = 4, label.size = 0, label.r = unit(0.05, "lines"),
-           fill = "grey12", col = "white", alpha = 0.6,
-           hjust = 0,
-           family = "Roboto", fontface = "bold") +
   scale_alpha(c(0.7, 0)) +
   labs(caption = "Data: **Natural Earth**, **OpenStreetMap** |
        Visualization: **Ansgar Wolsing**",
