@@ -24,19 +24,8 @@ clubs_1to5div <- c("1. FC Köln",
                 "SC Fortuna Köln",
                 "FC Viktoria Köln")
 
-
 #' Football grounds
 #' Search on Google Maps
-grounds <- tribble(
-      ~club, ~ground, ~coordinates,
-      "1. FC Köln",       "RheinEnergie Stadion", st_point(c(6.875, 50.933611)),
-      "FC Viktoria Köln", "Sportpark Höhenberg",  st_point(c(7.03039, 50.9452)),
-      "SC Fortuna Köln",  "Südstadion",           st_point(c(6.94361, 50.9175)),
-      "SV Deutz 05", "BB Bank Sportpark", st_point(c(6.9791233, 50.9259744)),
-      "FC Junkersdorf", "Ostkampfbahn", st_point(c(6.8755043, 50.933527)),
-      "FC Pesch",  "Helmut-Kusserow-Sportanlage", st_point(c(6.8688709, 51.001883))
-      )
-
 grounds <- tibble(
   club = clubs_1to5div,
   ground = c("RheinEnergie Stadion",
@@ -77,10 +66,9 @@ grounds <- tibble(
 #'
 #'
 
-## PLOT ========================================================================
+## VORONOI TESSELATION =========================================================
 
-
-# Create Voronoi shapes based on club grounds
+# Create Voronoi cells based on club grounds
 voronoi <- grounds %>%
   st_union() %>%
   st_voronoi() %>%
@@ -89,6 +77,9 @@ voronoi <- grounds %>%
 # intersect with Cologne shape
 voronoi <- voronoi[unlist(st_intersects(grounds, voronoi))] %>%
   st_intersection(cgn_polygon)
+
+
+## PLOT ========================================================================
 
 seed <- 4711
 set.seed(seed)
@@ -108,7 +99,6 @@ voronoi %>%
                 fill = "grey12", col = "white", alpha = 0.6,
                 hjust = 0, nudge_x = 0.012, nudge_y = -0.005,
                 family = "Chivo") +
-  # scale_fill_discrete_sequential(palette = "Blues 2", rev = FALSE) +
   scale_fill_paletteer_d("cartography::green.pal", dynamic = TRUE) +
   labs(
     # title = "Support your local club",
@@ -116,7 +106,7 @@ voronoi %>%
     subtitle = "Nearest (semi)-professional football teams' grounds to every point in Cologne",
     caption = "<sup>\\*</sup><i>Translation:</i> We stand by you, FC Kölle.<br><br>
     Data: **OpenStreetMap** | Visualization: **Ansgar Wolsing** |
-    Images credits: the respective clubs") +
+    Images credits: Wikipedia, the respective clubs") +
   cowplot::theme_map() +
   theme(plot.background = element_rect(color = NA, fill = "#1D1D59"),
         text = element_text(family = "Roboto Light", color = "white"),
