@@ -45,15 +45,17 @@ grounds <- tibble(
   club_icon = c(
     here("data", "Emblem_1.FC_Köln.svg"),
     here("data", "Logo_Deutz_05.svg"),
-    NA,
+    here("data", "LOGO_FC_Junkersdorf.svg"),
     here("data", "FC_Pesch_Logo.svg"),
     here("data", "SC_Fortuna_Koeln_Logo_since_2019.svg"),
     here("data", "FC_Viktoria_Köln_1904_Logo.svg")
   )
 ) %>%
-  # exclude FC Junkersdorf which uses a ground at Sportpark Müngersdorf (1. FC Köln)
-  filter(club != "FC Junkersdorf") %>%
   st_as_sf(crs = 4326)
+
+grounds2 <- grounds %>%
+  # exclude FC Junkersdorf which uses a ground at Sportpark Müngersdorf (1. FC Köln)
+  filter(club != "FC Junkersdorf")
 
 
 #' Club icons
@@ -63,19 +65,19 @@ grounds <- tibble(
 #'    SV Deutz 05: Von Sportvereinigung Deutz 05 e. V. - vectorized from Sportvereinigung Deutz 05 e. V.-Website [1], Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=85273833
 #'    Fortuna Köln: Von S.C. Fortuna Köln e.V. - S.C. Fortuna Köln e.V. - SVG extracted from [1], Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=86903779
 #'    FC Pesch: Von FC Pesch 1956 e.V. - FC Pesch 1956 e.V., Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=86282215
-#'
-#'
+#'    FC Junkersdorf: Von FC Junkersdorf 1946 e.V. - FC Junkersdorf 1946 e.V., Gemeinfrei, https://commons.wikimedia.org/w/index.php?curid=85519922
+
 
 ## VORONOI TESSELATION =========================================================
 
 # Create Voronoi cells based on club grounds
-voronoi <- grounds %>%
+voronoi <- grounds2 %>%
   st_union() %>%
   st_voronoi() %>%
   st_collection_extract()
 
 # intersect with Cologne shape
-voronoi <- voronoi[unlist(st_intersects(grounds, voronoi))] %>%
+voronoi <- voronoi[unlist(st_intersects(grounds2, voronoi))] %>%
   st_intersection(cgn_polygon)
 
 
@@ -83,17 +85,19 @@ voronoi <- voronoi[unlist(st_intersects(grounds, voronoi))] %>%
 
 seed <- 4711
 set.seed(seed)
-voronoi %>%
+p <- voronoi %>%
   ggplot() +
-  geom_sf(aes(fill = sample(grounds$club, size = nrow(grounds), replace = FALSE)),
+  geom_sf(aes(fill = sample(grounds2$club, size = nrow(grounds2), replace = FALSE)),
           col = "white", size = 0.5, show.legend = FALSE) +
-  geom_sf(data = grounds,
+  geom_sf(data = grounds2,
           aes(geometry = coordinates), size = 3,
           shape = 21, col = "white", fill = "grey12") +
-  ggimage::geom_image(aes(x = st_coordinates(grounds$coordinates)[, "X"]),
-                      y = st_coordinates(grounds$coordinates)[, "Y"],
-                      image = grounds$club_icon) +
-  geom_sf_label(data = grounds,
+  ggimage::geom_image(data = grounds2,
+                      aes(x = st_coordinates(coordinates)[, "X"],
+                      y = st_coordinates(coordinates)[, "Y"],
+                      image = club_icon),
+                      inherit.aes = FALSE) +
+  geom_sf_label(data = grounds2,
                 aes(geometry = coordinates, label = club),
                 size = 3, label.size = 0, label.r = unit(0.05, "lines"),
                 fill = "grey12", col = "white", alpha = 0.6,
@@ -116,6 +120,24 @@ voronoi %>%
         plot.caption = element_textbox_simple(size = 9)
         )
 set.seed(seed)
-ggsave(here("plots/day03_polygons_football_grounds.png"), dpi = 600,
-       width = 8, height = 8)
+ggsave(here("plots/day03_polygons_football_grounds.png"),
+       plot = p, dpi = 600, width = 8, height = 8)
+
+
+# Adding an annotation for the missing FC Junkersdorf
+coords_junkersdorf <- grounds$coordinates[grounds$club == "FC Junkersdorf"]
+lat_junkersdorf <- st_coordinates(coords_junkersdorf)[, "X"]
+lon_junkersdorf <- st_coordinates(coords_junkersdorf)[, "YY"]
+
+p +
+  ggimage::geom_image(aes(x = lat_junkersdorf - 0.095,
+                          y = lon_junkersdorf - 0.05,
+                          image = grounds$club_icon[grounds$club == "FC Junkersdorf"]),
+                      inherit.aes = FALSE) +
+  geom_textbox(x = lat_junkersdorf - 0.095, y = lon_junkersdorf -0.05,
+           label = "FC Junkersdorf (5th division)",
+           width = unit(50, "mm"), fill = NA, box.color = NA, hjust = 0,
+           family = "Roboto", color = "white", size = 3.5)
+ggsave(here("plots/day03_polygons_football_grounds_w_junkersdorf.png"),
+       dpi = 600, width = 8, height = 8)
 
