@@ -37,3 +37,10 @@ Opening times / availabilities of kindergardens in Cologne
 
 ![A honeycomb tile map showing opening times / availabilities of
 kindergardens in Cologne](plots/day04_hexagons.png)
+
+### Day 5: Data Challenge: OpenStreetMap
+
+Bike lanes in Cologne, Germany, colored by surface type
+
+![A map of bike lanes in Cologne, Germany, colored by surface
+type](plots/day05_osmdata_bike-lanes.png)
