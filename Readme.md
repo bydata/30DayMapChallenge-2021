@@ -38,9 +38,16 @@ Opening times / availabilities of kindergardens in Cologne
 ![A honeycomb tile map showing opening times / availabilities of
 kindergardens in Cologne](plots/day04_hexagons.png)
 
-### Day 5: Data Challenge: OpenStreetMap
+### Day 5: Data Challenge 1: OpenStreetMap
 
 Bike lanes in Cologne, Germany, colored by surface type
 
 ![A map of bike lanes in Cologne, Germany, colored by surface
-type](plots/day05_osmdata_bike-lanes.png)
+type](plots/day05_osmdata_bike-lanes.png) \#\#\# Day 6: Red
+
+A tile grid map of vote shares of the Social Democrats (SPD) in the
+German Federal Election 2021 in each district in Cologne.
+
+![A tile grid map of vote shares of the Social Democrats (SPD) in the
+German Federal Election 2021 in each district in
+Cologne.](plots/day06_red_vote-share-spd_en.png)
