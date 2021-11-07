@@ -37,29 +37,6 @@ cent_grid <- st_centroid(grid)
 cent_merge <- st_join(cent_grid, initial["index_target"], left = FALSE)
 grid_new <- inner_join(grid, st_drop_geometry(cent_merge))
 
-# # Honeycomb
-# Honeygeom <- aggregate(
-#   grid_new,
-#   by = list(grid_new$index_target),
-#   FUN = min,
-#   do_union = FALSE
-# )
-
-# # Lets add the df
-# Honeycomb <- left_join(
-#   Honeygeom %>%
-#     select(index_target),
-#   st_drop_geometry(initial)
-# ) %>%
-#   select(-index_target)
-
-
-# ggplot(Honeycomb) +
-#   geom_sf(aes(fill = STT_NAME), show.legend = FALSE) +
-#   geom_sf_text(aes(label = STT_NAME), size = 2) +
-#   scale_fill_scico_d(palette = 'lapaz') +
-#   cowplot::theme_map()
-
 
 ## LOAD DATA ===================================================================
 #' Child care centers in Cologne
