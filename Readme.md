@@ -70,3 +70,10 @@ Grünen) in the German Federal Election 2021 in each district in Cologne.
 ![A tile grid map of vote shares of the Green Party in the German
 Federal Election 2021 in each district in
 Cologne.](plots/day07_green_vote-share-greens_en.png)
+
+### Day 8: Blue
+
+Average housing space the districts of Cologne
+
+![Average housing space the districts of
+Cologne](plots/day08-blue-area_living_inset.png)
