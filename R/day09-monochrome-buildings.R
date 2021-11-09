@@ -6,11 +6,6 @@ pacman::p_load("tidyverse", "here", "glue", "ggtext", "colorspace",
 coords_cgn <- getbb("Cologne, Germany", format_out = "sf_polygon")
 coords_cathedral <- getbb("Kölner Dom, Cologne, Germany",
                           featuretype = "church")
-coords_rhine <- opq(bbox = 'Cologne, Germany') %>%
-  add_osm_feature(key = 'name:de', value = 'Rhein', value_exact = TRUE) %>%
-  osmdata_sf()
-coords_rhine_cgn <- sf::st_intersection(coords_cgn, coords_rhine$osm_lines)
-
 
 ## GET DATA ====================================================================
 #' Source: https://www.offenedaten-koeln.de/dataset/adresse
@@ -72,14 +67,10 @@ plot_titles <- list(
 )
 
 p <- ggplot(coords_cgn) +
-  geom_sf(fill = "#d1a1e3", color = "grey91", size = 0.25) +
-  # plot Rhine
-  geom_sf(data = coords_rhine_cgn,
-          aes(geometry = geometry),
-          size = 2, col = "#854e99") +
+  geom_sf(fill = "#1c1c1c", col = "#222222") +
   geom_sf(data = buildings2,
           aes(geometry = geometry),
-          fill = "#482d52",
+          fill = "#f200ff",
           color = NA
           ) +
   # scale_fill_manual(values = point_colors) +
@@ -91,19 +82,18 @@ p <- ggplot(coords_cgn) +
   ) +
   cowplot::theme_map(font_family = "Roboto") +
   theme(
-    plot.background = element_rect(color = NA, fill = "#854e99"),
+    plot.background = element_rect(color = NA, fill = "#281e29"),
     legend.position = "top",
     legend.justification = "left",
     text = element_text(color = "grey92", lineheight = 1.3),
     plot.title = element_text(color = "white",
                               family = "Oswald",
                               face = "plain",
-                              size = 48,
+                              size = 42, hjust = 0,
                               margin = margin(t = 6, b = 12)),
-    plot.subtitle = element_textbox_simple(size = 16,
-                                           hjust = 0.5,
+    plot.subtitle = element_textbox_simple(size = 16, hjust = 0,
                                            margin = margin(t = 4, b = 0)),
-    plot.caption = element_textbox_simple(size = 10,
+    plot.caption = element_textbox_simple(size = 10, hjust = 0,
                                           margin = margin(t = 8, b = 8)))
 ggsave(here("plots", "day09_monochrome_buildings.png"),
        plot = p, dpi = 600, width = 10, height = 10)
