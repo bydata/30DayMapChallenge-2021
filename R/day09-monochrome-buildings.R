@@ -67,13 +67,12 @@ plot_titles <- list(
 )
 
 p <- ggplot(coords_cgn) +
-  geom_sf(fill = "#1c1c1c", col = "#222222") +
+  geom_sf(fill = "#1c1c1c") +
   geom_sf(data = buildings2,
           aes(geometry = geometry),
-          fill = "#f200ff",
+          fill = "#e9e9e9",
           color = NA
           ) +
-  # scale_fill_manual(values = point_colors) +
   coord_sf() +
   labs(
     title = plot_titles$title,
@@ -81,20 +80,22 @@ p <- ggplot(coords_cgn) +
     caption = plot_titles$caption
   ) +
   cowplot::theme_map(font_family = "Roboto") +
-  theme(
-    plot.background = element_rect(color = NA, fill = "#281e29"),
-    legend.position = "top",
-    legend.justification = "left",
-    text = element_text(color = "grey92", lineheight = 1.3),
-    plot.title = element_text(color = "white",
-                              family = "Oswald",
-                              face = "plain",
-                              size = 42, hjust = 0,
-                              margin = margin(t = 6, b = 12)),
-    plot.subtitle = element_textbox_simple(size = 16, hjust = 0,
-                                           margin = margin(t = 4, b = 0)),
-    plot.caption = element_textbox_simple(size = 10, hjust = 0,
-                                          margin = margin(t = 8, b = 8)))
+  theme(plot.background = element_rect(color = NA, fill = "grey1"),
+        text = element_text(color = "grey92"),
+        plot.title = element_text(color = "white",
+                                  family = "Oswald",
+                                  face = "plain",
+                                  size = 42,
+                                  hjust = 0.5,
+                                  margin = margin(t = 6, b = 12)),
+        plot.subtitle = element_markdown(size = 16,
+                                               hjust = 0.5,
+                                               margin = margin(t = 4, b = 0)),
+        plot.caption = element_markdown(size = 10,
+                                              hjust = 0.5,
+                                              margin = margin(t = 8, b = 8)))
 ggsave(here("plots", "day09_monochrome_buildings.png"),
        plot = p, dpi = 600, width = 10, height = 10)
+ggsave(here("plots", "day09_monochrome_buildings_lres.png"),
+       plot = p, dpi = 200, width = 10, height = 10)
 
