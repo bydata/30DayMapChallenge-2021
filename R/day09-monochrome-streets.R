@@ -53,12 +53,14 @@ p <- ggplot() +
         plot.title = element_text(color = "white",
                                   family = "Oswald",
                                   face = "plain",
-                                      size = 42,
-                                      margin = margin(t = 6, b = 12)),
+                                  size = 42,
+                                  hjust = 0.5,
+                                  margin = margin(t = 6, b = 12)),
         plot.subtitle = element_textbox_simple(size = 16,
                                                hjust = 0.5,
                                                margin = margin(t = 4, b = 0)),
         plot.caption = element_textbox_simple(size = 10,
+                                              hjust = 0.5,
                                               margin = margin(t = 8, b = 8)))
 ggsave(here("plots", "day09_monochrome-streets.png"),
        plot = p, dpi = 600, width = 10, height = 10)
