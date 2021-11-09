@@ -77,3 +77,10 @@ Average housing space the districts of Cologne
 
 ![Average housing space the districts of
 Cologne](plots/day08-blue-area_living_inset.png)
+
+### Day 9: Monochrome
+
+Streets of Cologne
+
+![A map showing the streets of
+Cologne](plots/day09_monochrome-streets.png)
