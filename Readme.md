@@ -84,3 +84,19 @@ Streets of Cologne
 
 ![A map showing the streets of
 Cologne](plots/day09_monochrome-streets.png)
+
+### Day 10: Raster
+
+![](plots/day10_raster.png)
+
+### Day 11: 3D
+
+![](plots/day11-3d-turnout.mp4)
+
+![](plots/day11-3d-turnout_optimized.gif)
+
+![](plots/day11-3d-turnout_snapshot.png)
+
+### Day 12: Population
+
+![](plots/day12-population-animated.gif)
