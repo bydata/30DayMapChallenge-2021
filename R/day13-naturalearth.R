@@ -6,14 +6,14 @@ pacman::p_load("tidyverse", "sf", "glue", "here", "scico", "rnaturalearth",
 
 #' https://github.com/ropensci/rnaturalearth
 ## RIVERS
+dir_raster <- here("data", "raster_data")
 ne_type <- "rivers_lake_centerlines"
 if (!file.exists(here(dir_raster, ne_type))) {
   ne_download(scale = 10, type = ne_type, category = "physical",
               destdir = here(dir_raster, ne_type), load = FALSE)
 }
 rivers <- ne_load(scale = 10, category = "physical", type = ne_type,
-                  destdir = here(dir_raster, ne_type)) %>%
-  st_as_sf(rivers)
+                  destdir = here(dir_raster, ne_type), returnclass = "sf")
 rhine <- rivers[rivers$name_en == "Rhine", ]
 
 ggplot(rhine) +
@@ -22,7 +22,6 @@ ggplot(rhine) +
 
 #' https://www.naturalearthdata.com/features/
 # Download shaded relief raster (SR) in high/low resolution (HR/LR)
-dir_raster <- here("data", "raster_data")
 ne_type <- "SR_LR"
 if (!file.exists(dir_raster)) {
   ne_download(scale = 50, type = ne_type, category = "raster",
@@ -30,10 +29,7 @@ if (!file.exists(dir_raster)) {
 }
 
 raster <- ne_load(scale = 10, category = "raster", type = "",
-                  destdir = dir_raster, file_name = ne_type)
-
-
-
+                  destdir = dir_raster, file_name = ne_type, returnclass = "sf")
 
 extent <- extent(3.5, 10.5, 46.5, 52)
 relief <- raster %>%
@@ -45,12 +41,6 @@ relief <- raster %>%
   st_as_sf()
 st_crs(relief) <- "EPSG:4326"
 
-
-ggplot(relief)+
-  geom_raster(aes(x, y),
-              fill = "brown") +
-  geom_raster(aes(x, y, alpha = value),
-              fill = "black")
 
 ggplot(relief) +
   # Relief
