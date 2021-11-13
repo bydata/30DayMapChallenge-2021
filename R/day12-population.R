@@ -4,22 +4,6 @@ pacman::p_load("tidyverse", "sf", "glue", "here", "scico", "rnaturalearth",
 world <- ne_countries(returnclass = "sf") %>%
   st_transform(crs = "+proj=moll")
 
-europe <- ne_countries(continent = "Europe", returnclass = "sf") %>%
-  st_transform(crs = "+proj=moll")
-
-
-ggplot(world) +
-  geom_sf(aes(geometry = geometry),
-          size = 0.1) +
-  coord_sf() +
-  theme_minimal()
-
-ggplot(europe) +
-  geom_sf(aes(geometry = geometry),
-          size = 0.1) +
-  coord_sf(xlim = c(-10, 30), ylim = c(20, 60)) +
-  theme_minimal()
-
 
 ## GET DATA ====================================================================
 url <- "https://www.offenedaten-koeln.de/sites/default/files/Geburts_Zuzugsorte_Koeln_V1.csv"
