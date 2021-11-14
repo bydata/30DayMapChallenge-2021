@@ -107,11 +107,10 @@ Day 2 (Lines) revisited, but using only Natural Earth data.
 
 ![](plots/day13_naturalearth.png)
 
-\#\#ä Day 14: Map using a new tool
+### Day 14: Map using a new tool
 
 Map created with [Datawrapper](https://www.datawrapper.com). The tile
 grid, created by @z3tt and me, can be downloaded from
 [](https://github.com/z3tt/grid-btw-wahlkreise-constituencies)
 
-<iframe title="Voter turnout in the German Federal Election 2021" aria-label="map" id="datawrapper-chart-oaJLl" src="https://datawrapper.dwcdn.net/oaJLl/1/" scrolling="no" frameborder="0" style="border: none;" width="600" height="822">
-</iframe>
+![](plots/voter-turnout-in-the-german-federal-election-2021.png)
