@@ -114,3 +114,5 @@ grid, created by @z3tt and me, can be downloaded from
 <https://github.com/z3tt/grid-btw-wahlkreise-constituencies>.
 
 ![](plots/voter-turnout-in-the-german-federal-election-2021.png)
+
+Interactive map: <https://datawrapper.dwcdn.net/oaJLl/6/>
