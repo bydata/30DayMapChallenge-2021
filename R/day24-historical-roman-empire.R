@@ -51,10 +51,6 @@ scrape_download_links <- function(url, download_link_regex) {
 }
 
 url <- "http://awmc.unc.edu/awmc/map_data/shapefiles/political_shading/"
-# page <- read_html(url)
-# links <- html_nodes(page, css = "a") %>% html_attr("href")
-# (links_roman_bc60 <- grep("roman_empire_(60_bc|bc_60|ad_14)_", links, value = TRUE))
-
 links_roman_bc60 <- scrape_download_links(url, "roman_empire_(60_bc|bc_60|ad_14)_")
 
 # Download shapefiles for extent and provinces
@@ -72,11 +68,6 @@ download_repo_files <- function(base_url, rel_links, data_dir, force = FALSE) {
 
 download_repo_files(url, links_roman_bc60, data_dir)
 
-# if (!dir.exists(data_dir)) {
-#   dir.create(data_dir)
-#   walk(links_roman_bc60, ~download.file(paste0(url, .x),
-#                                         destfile = here(data_dir, .x)))
-# }
 
 # ... shapefile for water
 water_repo_url <- "http://awmc.unc.edu/awmc/map_data/shapefiles/physical_data/openwater/roman_open_water/"
