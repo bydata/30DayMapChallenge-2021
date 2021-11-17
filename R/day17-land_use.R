@@ -59,21 +59,6 @@ lup %>%
   select(erlaeuterung)
 
 
-lup_prep <- lup %>%
-  mutate(nutzung2 = replace_na(nutzung, "Unbekannt"),
-         nutzung2 = str_remove(nutzung2, "Fläche für(\\s(den|die|das))?"),
-         nutzung2 = case_when(
-           str_detect(nutzung2, "Grünfläche") ~ "Grünfläche",
-           str_detect(nutzung2, "Sonderbaufläche") ~ "Sonderbaufläche",
-           TRUE ~ nutzung2),
-         nutzung2 = str_trim(nutzung2)
-         )
-
-lup_prep %>%
-  st_drop_geometry() %>%
-  count(nutzung2)
-
-
 #' Urban land use categories
 #' https://www.semanticscholar.org/paper/Urban-land-use-classes-with-fuzzy-membership-and-on-Zhan-Molenaar/37f786405ce6e88fcd5e4cd6f2e72efce11fdc96/figure/2
 #' https://www.bbc.co.uk/bitesize/guides/z3n9gdm/revision/1
@@ -107,7 +92,15 @@ de_en_translation <- c(
 
 
 
-lup_prep <- lup_prep %>%
+lup_prep <- lup %>%
+  mutate(nutzung2 = replace_na(nutzung, "Unbekannt"),
+         nutzung2 = str_remove(nutzung2, "Fläche für(\\s(den|die|das))?"),
+         nutzung2 = case_when(
+           str_detect(nutzung2, "Grünfläche") ~ "Grünfläche",
+           str_detect(nutzung2, "Sonderbaufläche") ~ "Sonderbaufläche",
+           TRUE ~ nutzung2),
+         nutzung2 = str_trim(nutzung2)
+  ) %>%
   select(nutzung2) %>%
   mutate(
     landuse = de_en_translation[nutzung2],
@@ -120,6 +113,17 @@ lup_prep <- lup_prep %>%
       "Commercial" = c("Business area")
     ))
 
+lup_prep %>%
+  st_drop_geometry() %>%
+  count(nutzung2)
+
+lup_prep %>%
+  st_drop_geometry() %>%
+  count(landuse)
+
+## PLOTS =======================================================================
+
+# Choose colors for land use categories
 paletteer_d("trekcolors::lcars_cardassian")
 landuse_colors <- c(
   "Residential area" = "#BFCAFEFF" , "Special residential area" = "#8B799CFF",
@@ -132,6 +136,9 @@ landuse_colors <- c(
   "Industrial use" = "#FFE705FF", "Business park" = "#2F7270FF"
 )
 
+
+
+## FACETS ----------------------------------------------------------------------
 
 plot_titles <- list(
   title = "Zoning Plan Cologne",
@@ -189,7 +196,7 @@ ggsave(here("plots", "day17-landuse-en_facets.png"), plot = p,
        dpi = 600, width = 9.5, height = 9)
 
 
-## ALL IN ONE
+## ALL IN ONE ------------------------------------------------------------------
 
 
 plot_titles$subtitle <- "A zoning plan is issued by the municipal authorities
