@@ -81,7 +81,7 @@ grid_new_accidents_agg <- aggregate(
 )
 
 
-p <- grid_new_accidents_agg %>%
+p_overall <- grid_new_accidents_agg %>%
   ggplot() +
   geom_sf(aes(geometry = geometry, fill = n_accidents),
           col = "grey10", size = 0.1) +
@@ -92,12 +92,12 @@ p <- grid_new_accidents_agg %>%
   cowplot::theme_map() +
   theme(
     plot.background = element_rect(color = NA, fill = "white"),
-    legend.position = c(0.1, 0.1),
+    legend.position = "bottom",
     legend.direction = "horizontal",
     legend.key.width = unit(15, "mm")
 
   )
-ggsave(here("plots", "day27-heatmap.png"), plot = p, dpi = 300, width = 8, height = 8)
+ggsave(here("plots", "day27-heatmap_overall.png"), plot = p_overall, dpi = 300, width = 8, height = 8)
 
 plot_titles <- list(
   title = "Road accidents in Cologne",
@@ -156,6 +156,60 @@ ggsave(here("plots", "day27-heatmap.png"), plot = p,
        dpi = 300, width = 8, height = 4.5)
 
 
+
+## 3D MAP ======================================================================
+
+library(rayshader)
+
+p_3d <- grid_new_accidents_agg %>%
+  ggplot() +
+  geom_sf(aes(geometry = geometry, fill = n_accidents),
+          col = "grey20", size = 0.25
+          ) +
+  paletteer::scale_fill_paletteer_c("ggthemes::Red-Black-White Diverging",
+                                    direction = -1,
+                                    aesthetics = list("fill", "color")) +
+  guides(fill = guide_colorsteps(title = "No. of accidents", title.position = "top"),
+         color = "none") +
+  cowplot::theme_map(font_family = "Lato", font_size = 8) +
+  theme(
+    plot.background = element_rect(color = NA, fill = "white"),
+    legend.position = "bottom",
+    legend.justification = "center",
+    legend.direction = "horizontal",
+    # legend.key.width = unit(15, "mm")
+    legend.key.height = unit(2, "mm"),
+    text = element_text(color = "grey40"),
+    legend.title = element_text(size = 4),
+    legend.text = element_text(size = 4)
+  )
+
+# rgl::rgl.close()
+rgl::rgl.clear()
+plot_gg(
+  p_3d, preview = FALSE,
+  scale = 120, zoom = 0.5,
+  multicore = TRUE,
+  raytrace = TRUE,
+  phi = 39, theta = 0,
+  # params passed to plot_3d()
+  zcale = 1.05,
+  solid = FALSE,
+  soliddepth = 10,
+  solidcolor = "transparent",
+  baseshape =  "circle",
+  windowsize = c(1200, 1024) # see https://github.com/tylermorganwall/rayshader/issues/70
+)
+
+render_snapshot(
+  here("plots", "day27-heatmap-3d.png"),
+  title_text = toupper("Road accidents in Cologne (2016-2020)"),
+  title_font = "Oswald",
+  title_color = "grey8",
+  title_position = "northwest",
+  title_offset = c(40, 40),
+  title_size = 36
+)
 
 
 
